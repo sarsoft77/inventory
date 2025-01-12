@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Учет товаров</title>
+  <link href="/src/styles.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 container mx-auto">
+  <div class="container mx-auto mt-10" x-data="productCatalog()">
+    <h1 class="text-center text-3xl font-bold mb-5">Учет товаров</h1>
+    <div id="products" class="grid grid-row">
+      <div class="border p-1 grid grid-cols-6">
+        <div>Название</div>
+        <div>Количество</div>
+        <div>Цена</div>
+        <div>Сумма</div>
+        <div>Действия</div>
+      </div>
+      <template x-for="product in products" :key="product.id">
+        <div class="border p-1 grid grid-cols-6">
+          <div class="font-bold" x-text="product.name"></div>
+          <div x-text="product.quantity"></div>
+          <div x-text="product.price + ' ₽'"></div>
+          <div x-text="(product.price * product.quantity) + ' ₽'"></div>
+          <button @click="startEdit(product)" class="bg-yellow-500 text-white p-1 m-1">Редактировать</button>
+          <button @click="deleteProduct(product.id)" class="bg-red-500 text-white p-1 m-1">Удалить</button>
+        </div>
+      </template>
+    </div>
+    <form @submit.prevent="newProduct ? addProduct() : updateProduct()" class="mb-5">
+      <input type="text" x-model="editProduct.name" placeholder="Наименование товара" class="border p-2 mr-2" required>
+      <input type="number" x-model="editProduct.quantity" placeholder="Количество" class="border p-2 mr-2" required>
+      <input type="number" x-model="editProduct.price" placeholder="Цена" class="border p-2 mr-2" required>
+      <button type="submit" class="bg-blue-500 text-white p-2">
+        <span x-text="newProduct ? 'Добавить товар' : 'Обновить товар' "></span>
+      </button>
+      <button type="button" x-show="!newProduct" @click="newProduct = true"
+        class="bg-gray-500 text-white p-2 ml-2">Отменить</button>
+    </form>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>
